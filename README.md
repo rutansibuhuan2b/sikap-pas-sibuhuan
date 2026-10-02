@@ -47,10 +47,10 @@ button.primary{background:#1c5b8d;color:#fff;border:0;border-radius:8px;padding:
 
 <main class="main">
 <section id="dashboard">
- <div class="top"><div><h1>Dashboard Pengamanan</h1><div class="sub" id="uptDashboard">RUTAN KELAS IIB SIBUHUAN</div><div class="sub">Monitoring administrasi dan kegiatan pengamanan Rutan Kelas IIB Sibuhuan</div></div><div class="user">👤 Admin Pengamanan</div></div>
+ <div class="top"><div><h1>Dashboard Pengamanan</h1><div class="sub" id="uptDashboard">RUTAN KELAS IIB SIBUHUAN</div><div class="sub">Monitoring administrasi dan kegiatan pengamanan UPT</div></div><div class="user">👤 Admin Pengamanan</div></div>
  <div class="cards">
   <div class="card"><div class="label">Petugas Bertugas</div><div class="num">18</div></div>
-  <div class="card"><div class="label">Regu Bertugas</div><div class="num">3</div></div>
+  <div class="card"><div class="label">Regu Aktif</div><div class="num">3</div></div>
   <div class="card"><div class="label">Kontrol Hari Ini</div><div class="num">24</div></div>
   <div class="card"><div class="label">Laporan Kejadian</div><div class="num">2</div></div>
   <div class="card"><div class="label">Status UPT</div><div class="num" style="font-size:18px;margin-top:13px">TERKENDALI</div></div>
@@ -187,7 +187,7 @@ button.primary{background:#1c5b8d;color:#fff;border:0;border-radius:8px;padding:
     <select><option>Rumah Tahanan Negara</option><option>Lembaga Pemasyarakatan</option><option>Lembaga Pemasyarakatan Perempuan</option><option>Lembaga Pembinaan Khusus Anak</option></select>
    </label>
    <label>Alamat UPT
-    <textarea id="alamatUpt" rows="3" placeholder="Jl. Hasanuddin No. 15 Sibuhuan"></textarea>
+    <textarea id="alamatUpt" rows="3" placeholder="Alamat lengkap UPT"></textarea>
    </label>
    <div class="actions"><button type="submit" class="primary">Simpan Identitas UPT</button></div>
   </form>
@@ -224,7 +224,7 @@ function simpanUpt(e){
  } catch(err) {
    console.warn('Storage terisolasi/dibatasi.');
  }
- catatAudit(`Memperbarui Nama UPT menjadi ${Rutan Kelas IIB Sibuhuan}`, 'Pengaturan');
+ catatAudit(`Memperbarui Nama UPT menjadi ${nama}`, 'Pengaturan');
  alert('Identitas UPT berhasil diperbarui secara aman.');
 }
 
@@ -259,9 +259,9 @@ function tambahKamar(){
  const row = table.insertRow(-1);
  const kamarName = 'Kamar-' + String(n).padStart(2, '0');
  
- row.innerHTML = `<td>${n}</td><td>Blok Baru</td><td>${sanitizeInput(A1,Mapenaling,A2,A3,B1,B2,B3)}</td><td>10</td><td>0</td><td><span class="badge green">Kosong</span></td><td><button class="secondary" onclick="editKamar(this)">Edit</button></td>`;
+ row.innerHTML = `<td>${n}</td><td>Blok Baru</td><td>${sanitizeInput(kamarName)}</td><td>10</td><td>0</td><td><span class="badge green">Kosong</span></td><td><button class="secondary" onclick="editKamar(this)">Edit</button></td>`;
  updateKamarStats();
- catatAudit(`Menambahkan ${A1,Mapenaling,A2,A3,B1,B2,B3}`, 'Kontrol Penghuni');
+ catatAudit(`Menambahkan ${kamarName}`, 'Kontrol Penghuni');
 }
 
 function editKamar(btn){
@@ -272,13 +272,13 @@ function editKamar(btn){
    row.cells[2].textContent = sanitizeInput(rawNama.trim());
  }
  
- const rawJumlah = prompt('182:', row.cells[4].textContent);
+ const rawJumlah = prompt('Jumlah WBP:', row.cells[4].textContent);
  if(rawJumlah !== null && !isNaN(rawJumlah) && Number(rawJumlah) >= 0){
    row.cells[4].textContent = Number(rawJumlah);
  }
  
- const kapasitas = 40(row.cells[3].textContent) || 0;
- const wbp = 182(row.cells[4].textContent) || 0;
+ const kapasitas = Number(row.cells[3].textContent) || 0;
+ const wbp = Number(row.cells[4].textContent) || 0;
  row.cells[5].innerHTML = wbp === 0 ? '<span class="badge gray">Kosong</span>' : (wbp >= kapasitas ? '<span class="badge orange">Penuh</span>' : (wbp >= kapasitas * 0.8 ? '<span class="badge orange">Terisi Tinggi</span>' : '<span class="badge green">Normal</span>'));
  
  updateKamarStats();
@@ -295,9 +295,9 @@ function updateKamarStats(){
 
 document.addEventListener('DOMContentLoaded', () => {
  try {
-   const saved = localStorage.getItem('siap_rutan_sibuhuan');
+   const saved = localStorage.getItem('siap_upt_name');
    if(saved){
-     document.getElementById('Rutan Kelas IIB Sibuhuan').value = saved;
+     document.getElementById('namaUpt').value = saved;
      document.getElementById('uptDashboard').textContent = saved;
    }
  } catch(err){}
