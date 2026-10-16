@@ -1,0 +1,16 @@
+services:
+  sikap-pas-api:
+    build: .
+    container_name: sikap-pas-api
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PORT: 3000
+      DB_PATH: /data/sikap-pas.sqlite
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - sikap_pas_data:/data
+
+volumes:
+  sikap_pas_data:
